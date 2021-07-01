@@ -1,0 +1,196 @@
+﻿<Window x:Class="Rope.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rope"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        xmlns:model="clr-namespace:Rope.Model"
+        model:WindowCloser.EnableWindowClosing="True"
+        xmlns:enumcmb="clr-namespace:Rope.BindingEnums"
+        Background="#333"
+        WindowState="Maximized">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenFileDialogCommand}" Modifiers="Ctrl" Key="O"/>
+        <KeyBinding Command="{Binding SaveFileDialogCommand}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding CloseWindowCommand}" Modifiers="Alt" Key="F4"/>
+    </Window.InputBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="Открыть" InputGestureText="Ctrl+O" Command="{Binding OpenFileDialogCommand}"/>
+                <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S" Command="{Binding SaveFileDialogCommand}"/>
+                <Separator/>
+                <MenuItem  Header="Закрыть"
+                          InputGestureText="Alt+F4" Command="{Binding CloseWindowCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Изменить">
+                <MenuItem Command="ApplicationCommands.Copy" Header="Копировать"/>
+                <MenuItem Command="ApplicationCommands.Cut" Header="Вырезать"/>
+                <MenuItem Command="ApplicationCommands.Paste" Header="Вставить"/>                
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">            
+            <Button x:Name="btnAddARowToATable" ToolTip="Добавить элемент в таблицу"
+                   Command="{Binding AddItem}">
+                <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z">
+                    <Path.Fill>
+                        <LinearGradientBrush>
+                            <GradientStop Color="DarkGreen" Offset="0.0"/>
+                            <GradientStop Color="Green" Offset="0.5" />
+                            <GradientStop Color="LightGreen" Offset="0.75"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Path.Fill>
+                </Path>
+            </Button>
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"  Command="{Binding UpCommand}">
+                
+                <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
+		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
+		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
+		 5.92,-26.72 7.68,-25.28 13.28,-20.32 L 18.88,-15.36 18.88,-15.2 C 18.88,-14.88 18.72,-14.72 18.56,-14.72
+		 18.4,-14.72 17.44,-14.72 14.88,-14.56 12.8,-14.56 11.2,-14.56 11.2,-14.56 11.2,-14.56 11.2,-11.36 11.2,-7.52
+		 11.2,0.48 11.2,-0.16 10.88,0 L 10.72,0 5.44,0 C 1.12,0 0.16,0 0,0 z" Clip="M -8,-26.88 L 19.04,-26.88 19.04,0.64 -8,0.64 z">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform X="5" Y="13"/>
+                            <ScaleTransform ScaleX="0.75"/>                           
+                        </TransformGroup>                        
+                    </Path.RenderTransform>                   
+                    <Path.Fill>
+                        <LinearGradientBrush>
+                            <GradientStop Color="DarkBlue" Offset="0.0"/>
+                            <GradientStop Color="Blue" Offset="0.5" />
+                            <GradientStop Color="LightBlue"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Path.Fill>
+                </Path>
+            </Button>
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Спуститься" Command="{Binding DownCommand}">
+                <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
+		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
+		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
+		 5.92,-26.72 7.68,-25.28 13.28,-20.32 L 18.88,-15.36 18.88,-15.2 C 18.88,-14.88 18.72,-14.72 18.56,-14.72
+		 18.4,-14.72 17.44,-14.72 14.88,-14.56 12.8,-14.56 11.2,-14.56 11.2,-14.56 11.2,-14.56 11.2,-11.36 11.2,-7.52
+		 11.2,0.48 11.2,-0.16 10.88,0 L 10.72,0 5.44,0 C 1.12,0 0.16,0 0,0 z" Clip="M -8,-26.88 L 19.04,-26.88 19.04,0.64 -8,0.64 z">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="0.75"/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-180"/>
+                            <TranslateTransform X="12" Y="-13"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Fill>
+                        <LinearGradientBrush>
+                            <GradientStop Color="DarkBlue" Offset="0.0"/>
+                            <GradientStop Color="Blue" Offset="0.5" />
+                            <GradientStop Color="LightBlue"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Path.Fill>
+                </Path>
+
+            </Button>
+            <Separator />
+            <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы"
+                    Command="{Binding DeleteItem}">
+                <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="-45"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Fill>
+                        <LinearGradientBrush>
+                            <GradientStop Color="DarkRed" Offset="0.0"/>
+                            <GradientStop Color="Red" Offset="0.5" />
+                            <GradientStop Color="Pink" Offset="0.75"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Path.Fill>
+                </Path>                
+            </Button>
+        </ToolBar>
+       
+        <Grid Margin="5" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer>
+                <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" 
+                          ItemsSource="{Binding Parameters}"
+                          SelectedItem="{Binding CurrentParameter}">
+                 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№ группы, 1-**" Width="*" Binding="{Binding Path=GroupNumber}"/>
+                        <DataGridTextColumn Header="Название команды" Width="*" Binding="{Binding Path=Name}"/>
+                        <DataGridTemplateColumn Header="Факультет" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FacultyType}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:FacultyType}}, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding FacultyType, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*" Header="Общий балл">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Text="{Binding TotalScore, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Content="{Binding TotalScore, UpdateSourceTrigger=PropertyChanged}"
+                                        Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ChangeParameterCommand}"
+                                        CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*" Header="Общее время">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Width="auto" 
+                                        Content="{Binding TotalTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,StringFormat={}{mm':'ss}}"
+                                        Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ChangeTimeCommand}"
+                                        CommandParameter="{Binding}"/>                                       
+                                        <TextBlock Text="{Binding TotalTimeInSeconds}" Width="auto" Foreground="Black"/>
+                                        <TextBlock Text=" s" Width="auto"/>
+                                    </StackPanel>                                  
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>                            
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*" Header="Результат">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Width="120"
+                                        Content="{Binding Result, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ResultCommand}"
+                                        CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Grid.Row="1">
+                <Button Content="Пересчитать"/>
+            </StackPanel>
+        </Grid>
+        
+        </DockPanel>
+</Window>

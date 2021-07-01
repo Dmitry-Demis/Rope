@@ -1,0 +1,58 @@
+﻿<Window x:Class="Rope.View.ResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rope.View"
+        xmlns:model="clr-namespace:Rope.Model"
+        mc:Ignorable="d"
+        Title="ResultWindow" Height="450" Width="800"
+        model:WindowCloser.EnableWindowClosing="True"
+        Background="#333"
+        >
+    <Window.InputBindings>
+        <KeyBinding  Command="{Binding OKCommand}" Key="Enter"/>
+    </Window.InputBindings>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ScrollViewer>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Image Source="/Formulae/MaxSP.png" Margin="5"/>
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                    <TextBox Text="{Binding MaxSP, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock FontStyle="Italic" Text="Всего 7 этапов, максимум за один этап 10, значит всего 70 баллов"/>
+                </StackPanel>
+                <Image Grid.Column="0" Grid.Row="1" Source="/Formulae/MaxATP.png" Margin="5"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                    <TextBox Text="{Binding MaxATP, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock FontStyle="Italic" Text="Количество баллов, которое можно максимально получить за дополнительные задания"/>
+                </StackPanel>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Минимальное время на факультете" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding MinFacultyTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
+                <Image Grid.Column="0" Grid.Row="3" Source="/Formulae/koeff.png" Margin="5"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Koeff, UpdateSourceTrigger=PropertyChanged}"/>
+                <Image Grid.Column="0" Grid.Row="4" Source="/Formulae/Total.png" Margin="5"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Result, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </ScrollViewer>        
+        <UniformGrid Rows="1" Columns="2" Grid.Row="1" VerticalAlignment="Bottom">
+            <Button Content="Ok" Grid.Column="0" Command="{Binding OKCommand}"/>
+            <Button Content="Cancel" Grid.Column="1" Command="{Binding CancelCommand}"/>
+        </UniformGrid>
+
+    </Grid>
+</Window>

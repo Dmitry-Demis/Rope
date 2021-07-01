@@ -1,0 +1,34 @@
+﻿<Window x:Class="Rope.View.TotalScoreWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rope.ViewModel"
+        mc:Ignorable="d"
+        Title="TotalScoreWindow" Height="450" Width="800"
+        Background="#333"
+        xmlns:model="clr-namespace:Rope.Model"
+        model:WindowCloser.EnableWindowClosing="True"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>      
+    </Window.Resources>
+    <DockPanel Margin="5">
+
+        <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" DockPanel.Dock="Top"
+                      Margin="5" ItemsSource="{Binding Points}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№ этапа" Binding="{Binding StageNumber}" IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Этап" Binding="{Binding StagePoint}"/>
+                <DataGridTextColumn Header="Дополнительные задания" Binding="{Binding AdditionalTasksPoint}"/>
+                <DataGridTextColumn Header="Штрафы" Binding="{Binding PenaltyPoint}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <UniformGrid Rows="1" Columns="2" Grid.Row="1" VerticalAlignment="Bottom">
+            <Button Content="Ok" Grid.Column="0" Command="{Binding OKCommand}"/>
+            <Button Content="Cancel" Grid.Column="1" Command="{Binding CancelCommand}"/>
+        </UniformGrid>
+    </DockPanel>
+    
+</Window>
