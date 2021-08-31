@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rope.ViewModel"
         mc:Ignorable="d"
-        Title="TotalScoreWindow" Height="450" Width="800"
+        Title="Баллы из маршрутного листа" Height="450" Width="800"
         Background="#333"
         xmlns:model="clr-namespace:Rope.Model"
         model:WindowCloser.EnableWindowClosing="True"
@@ -15,7 +15,7 @@
     <DockPanel Margin="5">
 
         <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" DockPanel.Dock="Top"
-                      Margin="5" ItemsSource="{Binding Points}" AutoGenerateColumns="False">
+                      Margin="5" ItemsSource="{Binding PointsList}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№ этапа" Binding="{Binding StageNumber}" IsReadOnly="True">
                 </DataGridTextColumn>

@@ -5,7 +5,10 @@
 
     <!-- Brushes -->
 
+    
     <SolidColorBrush x:Key="ControlForeground" Color="#FF32EBFB" />
+    <!--<SolidColorBrush x:Key="ControlForeground" Color="#FFFD9804" />-->
+   
     <SolidColorBrush x:Key="ControlForegroundWhite" Color="#FFEEEFFF" />
     <SolidColorBrush x:Key="BorderBrushVisual" Color="Transparent"/>
     <SolidColorBrush x:Key="ControlPressedVisualBrush" Color="Transparent"/>

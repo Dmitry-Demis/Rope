@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Rope.View"
         xmlns:model="clr-namespace:Rope.Model"
         mc:Ignorable="d"
-        Title="Ввод команды" Height="450" Width="450"
+        Title="Ввод команды" Height="250" Width="450"
         xmlns:enumcmb="clr-namespace:Rope.BindingEnums"
         Background="#303030"
         model:WindowCloser.EnableWindowClosing="True"
@@ -29,27 +28,30 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="№ группы, 1-**" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
-                <TextBox Text="{Binding GroupNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock FontStyle="Italic" Text="Например, 1-41х или 1-45хх"/>
-            </StackPanel>
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Название команды" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Факультет" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="5"
+                      ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:FacultyType}}, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding FacultyType}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Номер группы" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5"
+                      ItemsSource="{Binding NumberOfGroups, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding GroupNumber}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Название команды" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock FontStyle="Italic" Text="Например, Красивые танцы"/>
             </StackPanel>
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Факультет" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="2" Grid.Column="1" Margin="5"
-                      ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:FacultyType}}, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding FacultyType}"/>
-            
+            <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="Подгруппа" TextWrapping="Wrap" Margin="5" TextAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="5" IsEnabled="False">
+                
+            </ComboBox>-->
+
         </Grid>
         <UniformGrid Rows="1" Columns="2" Grid.Row="1" VerticalAlignment="Bottom">
             <Button Content="Ok" Grid.Column="0" Command="{Binding OKCommand}"/>
             <Button Content="Cancel" Grid.Column="1" Command="{Binding CancelCommand}"/>
         </UniformGrid>
-
     </Grid>
 </Window>

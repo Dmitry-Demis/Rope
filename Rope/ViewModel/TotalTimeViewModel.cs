@@ -23,32 +23,40 @@ namespace Rope.ViewModel
         /// DialogService for showing dialogues
         /// </summary>
         private readonly IDialogService dialogService;
-        /// <summary>
-        /// Current parameter
-        /// </summary>
-        private Parameter parameter;
-        public ObservableCollection<Time> Time { get; set; } = new ObservableCollection<Time>();
-        public TotalTimeViewModel(IDialogService dialogService, Parameter parameter)
+        
+        //Массив времени для текущей группы.
+        public ObservableCollection<Time> TimeList { get; set; } = new ObservableCollection<Time>();
+
+        public TotalTimeViewModel(IDialogService dialogService, Parameter current_parameter)
         {
             this.dialogService = dialogService;
-            this.parameter = parameter;
-            if (parameter.Time.Count == 0)
+            this.currentParameter = current_parameter;   
+
+            //Если массив времени для группы пуст, заполняем
+            if (currentParameter.TimeList.Count == 0)
             {
-                Random random = new Random();
-                for (int i = 0; i < 7; i++)
+                FillInDefaultValues();
+            }
+            else
+            {
+                foreach (var value in current_parameter.TimeList)
                 {
-                    Time time = new Time();
-                    time.StageNumber = i + 1;
-                    time.Minutes = time.Seconds= string.Empty;
-                    Time.Add(time);
+                    TimeList.Add(value);
                 }
             }
-            foreach (var value in parameter.Time)
-            {
-                Time.Add(value);
-            }
-            CurrentItem = Time?.Count > 0 ? Time[0] : null;
         }
+        private Parameter currentParameter;
+
+        private void FillInDefaultValues()
+        {
+                            
+                for (int i = 0; i < 7; i++)
+                {
+                    TimeList.Add(new Time());
+                }
+            
+        }
+        //Текущая выбранная строчка.
         private Time _currentItem;
         public Time CurrentItem
         {
@@ -56,10 +64,9 @@ namespace Rope.ViewModel
             set 
             {
                 SetProperty(ref _currentItem, value);
-            }
-                
+            }                
         }
-        public TimeSpan TotalTime { get; set; }
+        public TimeSpan TotalTime { get; set; } = default;
         /// <summary>
         /// Allows to close a window
         /// </summary>
@@ -68,51 +75,27 @@ namespace Rope.ViewModel
             => _okCommand ??
             (_okCommand = new RelayCommand(() =>
             {
-                TotalTime = Recalculate();
-                parameter.Time.Clear();
-                foreach (var item in Time)
+                currentParameter.TimeList.Clear();
+                currentParameter.TotalTime = default;
+                foreach (var item in TimeList)
                 {
-                    parameter.Time.Add(item);
+                    currentParameter.TimeList.Add(item);                    
+                    TotalTime += item.TotalStageTime; 
+                    currentParameter.TotalTime = TotalTime;
                 }
                 Close();
             }
-            ));
-        private TimeSpan Recalculate()
-        {
-            TimeSpan time = new TimeSpan();
-            for (int i = 0; i < 7; i++)
-            {
-                if (Time[i].Minutes == String.Empty)
-                {
-                    Time[i].Minutes = "00";
-                }
-                if (Time[i].Seconds == String.Empty)
-                {
-                    Time[i].Seconds = "00";
-                }
-                if (Time[i].Minutes.Length==1)
-                {
-                    Time[i].Minutes = "0" + Time[i].Minutes;
-                }
-                if (Time[i].Seconds.Length == 1)
-                {
-                    Time[i].Seconds = "0" + Time[i].Seconds;
-                }
-                var s = "00:"+Time[i].Minutes + ":" + Time[i].Seconds;
-                var l = TimeSpan.Parse(s);
-                time += l;
-            }
-            return time;
-        }
+            ));     
 
-        /// <summary>
-        /// Allows to cancel input without saving
-        /// </summary>
+        ///// <summary>
+        ///// Allows to cancel input without saving
+        ///// </summary>
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand
             => _cancelCommand ??
-            (_cancelCommand = new RelayCommand(() => {
-
+            (_cancelCommand = new RelayCommand(() =>
+            {
+                FillInDefaultValues();
                 Close();
             }));
     }

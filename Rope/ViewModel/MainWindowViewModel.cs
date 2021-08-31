@@ -19,7 +19,7 @@ namespace Rope.ViewModel
         /// </summary>
         private readonly IDialogService dialogService;
         private readonly IFileService fileService;
-        private IDictionary<FacultyType, int> Dict = new Dictionary<FacultyType, int>();
+        private Dictionary<FacultyType, int> Dict = new Dictionary<FacultyType, int>();
 
         public event Action Closed;
         public void Close()
@@ -94,10 +94,7 @@ namespace Rope.ViewModel
         public Parameter CurrentParameter
         {
             get => _currentParameter;
-            set
-            {
-                SetProperty(ref _currentParameter, value);
-            }
+            set => SetProperty(ref _currentParameter, value);
         }
 
         /// <summary>
@@ -115,21 +112,51 @@ namespace Rope.ViewModel
                       dialogService.ShowDialog(viewModel);
                       if (viewModel.Name != null)
                       {
-                         Parameter parameter = new Parameter();
+                          Parameter parameter = new Parameter();
                           parameter.Name = viewModel.Name;
                           parameter.GroupNumber = viewModel.GroupNumber;
                           parameter.FacultyType = viewModel.FacultyType;
-                         /* Points point = new Points();
-                          List<Points> points = new List<Points>(7) { point };*/
-                          parameter.Points = new ObservableCollection<Points>();
-                          parameter.Time = new ObservableCollection<Time>();
+                          parameter.PointsList = new ObservableCollection<Points>();
+                          parameter.TimeList = new ObservableCollection<Time>();
                           CurrentParameter = parameter;
                           Parameters.Add(CurrentParameter);
+                          /*if (!Dict.ContainsKey(parameter.FacultyType))
+                          {
+                              Dict.Add(parameter.FacultyType, parameter.TotalTimeInSeconds);
+                          }
+                          else
+                          {
+                              Dict[parameter.FacultyType] = Math.Min(Dict[parameter.FacultyType], parameter.TotalTimeInSeconds);
+                          }*/
                       }
                   }));
             }
         }
 
+       /* private RelayCommand<Parameter> _changeInputDataWindowCommand;
+        public RelayCommand<Parameter> ChangeInputDataWindowCommand
+        {
+            get
+            {
+                return _changeInputDataWindowCommand ??
+                       (_changeInputDataWindowCommand = new RelayCommand<Parameter>((param) =>
+                       {
+                           InputDataViewModel viewModel = new InputDataViewModel(dialogService, param);
+                           dialogService.ShowDialog(viewModel);
+                           if (viewModel.Parameter != null)
+                           {
+                               param.FacultyType = viewModel.FacultyType;
+                               param.Name = viewModel.Name;
+                               param.GroupNumber = viewModel.GroupNumber;
+                           }
+                       },
+                           (param) =>
+                           {
+                               return CurrentParameter != null;
+                           }
+                    )) ;
+            }
+        }*/
         /// <summary>
         /// A command, which can change a selected parameter
         /// </summary>
@@ -147,6 +174,7 @@ namespace Rope.ViewModel
                            {
                                param.TotalScore = viewModel.TotalScore;
                            }
+                           
                        }
                     ));
             }
@@ -164,19 +192,19 @@ namespace Rope.ViewModel
                        {
                            TotalTimeViewModel viewModel = new TotalTimeViewModel(dialogService, param);
                            dialogService.ShowDialog(viewModel);
-                           if (viewModel.TotalTime != default)
+                           if (viewModel.TotalTime!=default)
                            {
-                               param.TotalTime = viewModel.TotalTime;
-                               param.TotalTimeInSeconds = viewModel.TotalTime.Seconds + viewModel.TotalTime.Minutes * 60;
-                               if (Dict.ContainsKey(param.FacultyType))
-                               {
-                                   Dict[param.FacultyType] = Math.Min(Dict[param.FacultyType], param.TotalTimeInSeconds);
-                               }
-                               else
-                               {
-                                   Dict.Add(param.FacultyType, param.TotalTimeInSeconds);
-                               }
+                               param.TotalTimeInSeconds = (int)viewModel.TotalTime.TotalSeconds;
                            }
+                           if (!Dict.ContainsKey(param.FacultyType))
+                           {
+                               Dict.Add(param.FacultyType, param.TotalTimeInSeconds);
+                           }
+                           else
+                           {
+                               Dict[param.FacultyType] = Math.Min(Dict[param.FacultyType], param.TotalTimeInSeconds);
+                           }
+
                        }
                     ));
             }
@@ -192,11 +220,8 @@ namespace Rope.ViewModel
                 return _resultCommand ??
                        (_resultCommand = new RelayCommand<Parameter>((param) =>
                        {
-                           if (Dict.ContainsKey(param.FacultyType))
-                           {
-                               param.Result = Dict[param.FacultyType].ToString();
-                           }
-                           ResultViewModel viewModel = new ResultViewModel(dialogService, param);
+                           
+                           ResultViewModel viewModel = new ResultViewModel(dialogService, param, Dict);
                            dialogService.ShowDialog(viewModel);
                            param.Result = string.Format("{0:0.00}", viewModel.Result);
 

@@ -24,9 +24,8 @@ namespace Rope.Model
         /// <summary>
         /// A list of string values
         /// </summary>
-        public ObservableCollection<Points> Points { get; set; }// = new ObservableCollection<Points>(new List<Points>(7));
-        public ObservableCollection<Time> Time { get; set; }
-        //public double TotalScore { get; set; } = 0.0;
+        public ObservableCollection<Points> PointsList { get; set; }// = new ObservableCollection<Points>(new List<Points>(7));
+        public ObservableCollection<Time> TimeList { get; set; }
         /// <summary>
         /// A parameter type
         /// </summary>
@@ -39,7 +38,6 @@ namespace Rope.Model
                 SetProperty(ref _totalScore, value);
             }
         }
-
         /// <summary>
         /// A parameter type
         /// </summary>
@@ -52,6 +50,7 @@ namespace Rope.Model
                 SetProperty(ref _totalTime, value);
             }
         }
+
         private int _totalTimeInSeconds;
         public int TotalTimeInSeconds
         {
@@ -61,6 +60,7 @@ namespace Rope.Model
                 SetProperty(ref _totalTimeInSeconds, value);
             }
         }
+
         private string _result = "0,0";
         public string Result
         {
@@ -69,8 +69,6 @@ namespace Rope.Model
             {
                 SetProperty(ref _result, value);
             }
-        }
-
-
+        }       
     }
 }

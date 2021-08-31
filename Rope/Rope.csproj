@@ -159,5 +159,8 @@
     <Resource Include="Formulae\maxSP.PNG" />
     <Resource Include="Formulae\Total.PNG" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Formulae\Change.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

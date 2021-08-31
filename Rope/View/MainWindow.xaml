@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rope"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Верёвочный курс. Подсчёт баллов" Height="450" Width="800"
         xmlns:model="clr-namespace:Rope.Model"
         model:WindowCloser.EnableWindowClosing="True"
         xmlns:enumcmb="clr-namespace:Rope.BindingEnums"
@@ -45,7 +45,11 @@
                     </Path.Fill>
                 </Path>
             </Button>
-            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"  Command="{Binding UpCommand}">
+            <Button x:Name="ChangeButton" ToolTip="Изменение первых трёх колонок"
+                    Command="{Binding ChangeInputDataWindowCommand}" CommandParameter="{Binding CurrentParameter}">
+                <Image Source="/Formulae/Change.ico" Width="27"/>
+            </Button>
+            <!--<Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"  Command="{Binding UpCommand}">
                 
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
@@ -94,7 +98,7 @@
                     </Path.Fill>
                 </Path>
 
-            </Button>
+            </Button>-->
             <Separator />
             <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы"
                     Command="{Binding DeleteItem}">
@@ -122,23 +126,23 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <ScrollViewer>
-                <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" 
+                <DataGrid AutoGenerateColumns="False" CanUserAddRows="False"
                           ItemsSource="{Binding Parameters}"
                           SelectedItem="{Binding CurrentParameter}">
                  
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="№ группы, 1-**" Width="*" Binding="{Binding Path=GroupNumber}"/>
-                        <DataGridTextColumn Header="Название команды" Width="*" Binding="{Binding Path=Name}"/>
-                        <DataGridTemplateColumn Header="Факультет" Width="*">
+                    <DataGrid.Columns> 
+                        <DataGridTextColumn Header="№ группы, 1-**" Width="*" Binding="{Binding Path=GroupNumber}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Название команды" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="Факультет" Width="*" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding FacultyType}"/>
+                                    <TextBlock Text="{Binding FacultyType}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:FacultyType}}, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedItem="{Binding FacultyType, Mode=TwoWay}"/>
+                                              SelectedItem="{Binding FacultyType, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
@@ -146,7 +150,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock
-                                        Text="{Binding TotalScore, UpdateSourceTrigger=PropertyChanged}"/>
+                                        Text="{Binding TotalScore, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
@@ -159,18 +163,29 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*" Header="Общее время">
+                            <!--<DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Width="auto" HorizontalAlignment="Stretch"
+                                        Text="{Binding TotalTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,StringFormat={}{mm':'ss}}"/>
+                                        <Separator/>
+                                        <TextBlock Text="{Binding TotalTimeInSeconds}" Width="auto" Foreground="Black"/>
+                                        <TextBlock Text=" s" Width="auto"/>
+                                    </StackPanel>                                  
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>-->
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button Width="auto" 
                                         Content="{Binding TotalTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,StringFormat={}{mm':'ss}}"
                                         Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ChangeTimeCommand}"
-                                        CommandParameter="{Binding}"/>                                       
-                                        <TextBlock Text="{Binding TotalTimeInSeconds}" Width="auto" Foreground="Black"/>
+                                        CommandParameter="{Binding}"/>
+                                        <TextBlock Text="{Binding TotalTimeInSeconds, UpdateSourceTrigger=PropertyChanged}" Width="auto" Foreground="Black"/>
                                         <TextBlock Text=" s" Width="auto"/>
-                                    </StackPanel>                                  
+                                    </StackPanel>
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>                            
+                            </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*" Header="Результат">
                             <DataGridTemplateColumn.CellTemplate>

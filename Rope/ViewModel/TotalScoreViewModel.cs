@@ -1,9 +1,7 @@
 ﻿using Rope.Cmds;
 using Rope.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 
 namespace Rope.ViewModel
 {
@@ -16,52 +14,35 @@ namespace Rope.ViewModel
             Closed?.Invoke();
         }
 
-
-        /// <summary>
-        /// DialogService for showing dialogues
-        /// </summary>
         private readonly IDialogService dialogService;
-        /// <summary>
-        /// Current parameter
-        /// </summary>
+        
         private Parameter parameter;
-        public ObservableCollection<Points> Points { get; set; } = new ObservableCollection<Points>();
-        /*public ObservableCollection<double> StagePoints { get; set; } = new ObservableCollection<double>();
-        public ObservableCollection<double> AdditionalTasksPoints { get; set; } = new ObservableCollection<double>();
-        public ObservableCollection<double> PenaltyPoints{ get; set; } = new ObservableCollection<double>();*/
-        ///// <summary>
-        ///// A constructor with parameters
-        ///// </summary>
-        ///// <param name="dialogService">using for showing dialogues</param>
-        ///// <param name="parameter">using for chosen parameter</param>
-        public TotalScoreViewModel(IDialogService dialogService, Parameter parameter)
+        public ObservableCollection<Points> PointsList { get; set; } = new ObservableCollection<Points>();
+       
+        private void FillInDefaultValues()
         {
-            this.dialogService = dialogService;
-            this.parameter = parameter;
-            if (parameter.Points.Count==0)
+            if (parameter.PointsList.Count == 0)
             {
                 Random random = new Random();
                 for (int i = 0; i < 7; i++)
                 {
-                    Points points = new Points();
-                    points.StageNumber = i + 1;
-                    Points.Add(points);
+                    PointsList.Add(new Points());
                 }
-            }            
-            foreach (var value in parameter.Points)
-            {
-                Points.Add(value);
             }
-            CurrentItem = Points?.Count > 0 ? Points[0] : null;
+        }
+        public TotalScoreViewModel(IDialogService dialogService, Parameter parameter)
+        {
+            this.dialogService = dialogService;
+            this.parameter = parameter;
+            FillInDefaultValues();
+            foreach (var value in parameter.PointsList)
+            {
+                PointsList.Add(value);
+            }
+            CurrentItem = PointsList?.Count > 0 ? PointsList[0] : null;
         }
         public double TotalScore { get; set; }
-        /// <summary>
-        /// An observable collection of a value list
-        /// </summary>
-        //public ObservableCollection<double> ValueList { get; set; } = new ObservableCollection<double>();
-        /// <summary>
-        /// Current item
-        /// </summary>
+
         private Points _currentItem;
         public Points CurrentItem
         {
@@ -79,12 +60,12 @@ namespace Rope.ViewModel
                 
                 for (int i = 0; i < 7; i++)
                 {
-                    TotalScore += -Points[i].PenaltyPoint + Points[i].StagePoint + Points[i].AdditionalTasksPoint;
+                    TotalScore += -PointsList[i].PenaltyPoint + PointsList[i].StagePoint + PointsList[i].AdditionalTasksPoint;
                 }
-                parameter.Points.Clear();
-                foreach (var item in Points)
+                parameter.PointsList.Clear();
+                foreach (var item in PointsList)
                 {
-                    parameter.Points.Add(item);
+                    parameter.PointsList.Add(item);
                 }
                 Close();
             }
@@ -97,7 +78,7 @@ namespace Rope.ViewModel
         public RelayCommand CancelCommand
             => _cancelCommand ??
             (_cancelCommand = new RelayCommand(() => {
-               
+                FillInDefaultValues();
                 Close();
             }));
     }

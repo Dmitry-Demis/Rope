@@ -9,7 +9,7 @@
         Title="ResultWindow" Height="450" Width="800"
         model:WindowCloser.EnableWindowClosing="True"
         Background="#333"
-        >
+        WindowState="Maximized">
     <Window.InputBindings>
         <KeyBinding  Command="{Binding OKCommand}" Key="Enter"/>
     </Window.InputBindings>

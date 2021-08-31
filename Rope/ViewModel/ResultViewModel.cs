@@ -1,10 +1,8 @@
-﻿using Rope.Cmds;
+﻿using Rope.BindingEnums;
+using Rope.Cmds;
 using Rope.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rope.ViewModel
 {
@@ -22,11 +20,11 @@ namespace Rope.ViewModel
         /// DialogService for showing dialogues
         /// </summary>
         private readonly IDialogService dialogService;
-        public ResultViewModel(IDialogService dialogService, Parameter parameter)
+        public ResultViewModel(IDialogService dialogService, Parameter parameter, Dictionary<FacultyType, int> dictionary = null)
         {
             this.dialogService = dialogService;
             this.parameter = parameter;
-            MinFacultyTime = int.Parse(parameter.Result);
+            MinFacultyTime = (int)dictionary[parameter.FacultyType];
         }
         /// <summary>
         /// Number of a group
@@ -90,8 +88,7 @@ namespace Rope.ViewModel
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand
             => _cancelCommand ??
-            (_cancelCommand = new RelayCommand(() => {
-                Result = default;
+            (_cancelCommand = new RelayCommand(() => {                
                 Close();
             }));
 
