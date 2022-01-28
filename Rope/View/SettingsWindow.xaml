@@ -1,0 +1,59 @@
+﻿<Window x:Class="Rope.View.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rope.View"
+        xmlns:bindingEnums="clr-namespace:Rope.BindingEnums" xmlns:viewmodel="clr-namespace:Rope.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
+        mc:Ignorable="d"
+        Style="{StaticResource WindowStyle}"
+        ResizeMode="NoResize"
+        Title="{Binding Title}" Height="429" Width="339">
+    <DockPanel Margin="5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1">
+            <Button Content="Сохранить"/>
+            <Button Content="Отменить"/>
+        </UniformGrid>
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.Resources>
+
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Количество этапов" Grid.Column="0"/>
+            <TextBox Grid.Column="1" Text="{Binding NumberOfStages,  ValidatesOnDataErrors=True, NotifyOnValidationError=true,
+                UpdateSourceTrigger=PropertyChanged}" MaxLength="2"/>
+            <Button Grid.Column="2" Content="Применить" Command="{Binding ApplyStageCountCommand}"/>
+        </Grid>
+        <DataGrid ItemsSource="{Binding Stages}" AutoGenerateColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  SelectedItem="{Binding CurrentStage, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название этапа" Binding="{Binding Name}"/>
+                <!--<DataGridComboBoxColumn Header="Тип" 
+                                        ItemsSource="{Binding Source={bindingEnums:EnumBindingSource {x:Type bindingEnums:StageType}}, 
+                    UpdateSourceTrigger=PropertyChanged}"
+                                        SelectedItemBinding="{Binding StageType}"/>-->
+                <DataGridTemplateColumn Header="Тип">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StageType, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={bindingEnums:EnumBindingSource {x:Type bindingEnums:StageType}}, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedItem="{Binding StageType, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </DockPanel>
+
+</Window>

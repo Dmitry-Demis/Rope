@@ -105,22 +105,21 @@ namespace Rope.ViewModel
         {
             get
             {
-                return _addItem ??
-                  (_addItem = new RelayCommand(() =>
-                  {
-                      InputDataViewModel viewModel = new InputDataViewModel();
-                      dialogService.ShowDialog(viewModel);
-                      if (viewModel.Name != null)
-                      {
-                          Parameter parameter = new Parameter();
-                          parameter.Name = viewModel.Name;
-                          parameter.GroupNumber = viewModel.GroupNumber;
-                          parameter.FacultyType = viewModel.FacultyType;
-                          parameter.PointsList = new ObservableCollection<Points>();
-                          parameter.TimeList = new ObservableCollection<Time>();
-                          CurrentParameter = parameter;
-                          Parameters.Add(CurrentParameter);
-                          /*if (!Dict.ContainsKey(parameter.FacultyType))
+                return _addItem ??= new RelayCommand(() =>
+                {
+                    InputDataViewModel viewModel = new InputDataViewModel();
+                    dialogService.ShowDialog(viewModel);
+                    if (viewModel.Name != null)
+                    {
+                        Parameter parameter = new Parameter();
+                        parameter.Name = viewModel.Name;
+                        parameter.GroupNumber = viewModel.GroupNumber;
+                        parameter.FacultyType = viewModel.FacultyType;
+                        parameter.PointsList = new ObservableCollection<Points>();
+                        parameter.TimeList = new ObservableCollection<Time>();
+                        CurrentParameter = parameter;
+                        Parameters.Add(CurrentParameter);
+                        /*if (!Dict.ContainsKey(parameter.FacultyType))
                           {
                               Dict.Add(parameter.FacultyType, parameter.TotalTimeInSeconds);
                           }
@@ -128,8 +127,8 @@ namespace Rope.ViewModel
                           {
                               Dict[parameter.FacultyType] = Math.Min(Dict[parameter.FacultyType], parameter.TotalTimeInSeconds);
                           }*/
-                      }
-                  }));
+                    }
+                }, ()=> CanUseOtherCommands);
             }
         }
 
@@ -286,17 +285,13 @@ namespace Rope.ViewModel
         {
             get
             {
-                return _deleteItem ??
-                       (_deleteItem = new RelayCommand(() =>
-                       {
-                           if (dialogService.ShowMessageBoxDialog("Удаление элемента из таблицы", $"Вы правда хотите удалить элемент {CurrentParameter.Name}?") == MessageBoxResult.Yes)
-                               Parameters.Remove(CurrentParameter);
-                           //OnPropertyChanged(nameof(IsTableEmpty));
-                       },
-                           () =>
-                           {
-                               return CurrentParameter != null && Parameters.Count > 0;
-                           }));
+                return _deleteItem ??= new RelayCommand(() =>
+                    {
+                        if (dialogService.ShowMessageBoxDialog("Удаление элемента из таблицы", $"Вы правда хотите удалить элемент {CurrentParameter.Name}?") == MessageBoxResult.Yes)
+                            Parameters.Remove(CurrentParameter);
+                        //OnPropertyChanged(nameof(IsTableEmpty));
+                    },
+                    () => CurrentParameter != null && Parameters.Count > 0);
             }
         }
         /// <summary>
@@ -332,6 +327,7 @@ namespace Rope.ViewModel
             }
         }
 
+
         /// <summary>
         /// An open method for the OpenFileDialogCommand
         /// </summary>
@@ -352,5 +348,47 @@ namespace Rope.ViewModel
                 dialogService.ShowMessageBoxDialog(ex.Message);
             }
         }
+
+        #region ShowSettingsCommand : Настройки – nonparameterized
+
+        /// <summary>Команда: Настройки</summary>
+
+        private RelayCommand? _ShowSettingsCommand;
+
+        /// <summary>Команда: Настройки</summary>
+
+        public RelayCommand ShowSettingsCommand
+        {
+            get
+            {
+                return _ShowSettingsCommand ??= new RelayCommand(
+                    () =>
+                    {
+                        SettingsViewModel viewModel = new SettingsViewModel(dialogService);
+                        if (dialogService.ShowDialog(viewModel) == true)
+                        {
+                            CanUseOtherCommands = true;
+                        }
+                    });
+            }
+        }
+
+        #endregion
+
+        #region CanUseOtherCommands : bool - Доступ к другим командам
+
+        /// <summary>Доступ к другим командам</summary>
+
+        private bool _CanUseOtherCommands;
+
+        /// <summary>Доступ к другим командам</summary>
+
+        public bool CanUseOtherCommands
+        {
+            get => _CanUseOtherCommands;
+            set => SetProperty(ref _CanUseOtherCommands, value);
+        }
+
+        #endregion
     }
 }

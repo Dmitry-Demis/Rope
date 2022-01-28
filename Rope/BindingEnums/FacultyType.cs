@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Rope.Properties;
 
 namespace Rope.BindingEnums
 {
@@ -17,5 +18,13 @@ namespace Rope.BindingEnums
         ElectromechanicsFaculty,
         [Description("ЭЭФ")]
         ElectricalPowerEngineeringFaculty       
+    }
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
+    internal enum StageType
+    {
+        [Description("Время")]
+        Time,
+        [Description("Количество")]
+        Count
     }
 }

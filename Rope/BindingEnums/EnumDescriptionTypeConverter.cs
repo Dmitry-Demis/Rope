@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
+using System.Resources;
+using Rope.Properties;
 
 namespace Rope.BindingEnums
 {
@@ -21,6 +25,23 @@ namespace Rope.BindingEnums
                     if (fi != null)
                     {
                         var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                        ResourceManager MyResourceClass =
+                            new ResourceManager(typeof(Resources));
+
+                        ResourceSet resourceSet =
+                            MyResourceClass.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+                        string result = null;
+                        //foreach (DictionaryEntry entry in resourceSet)
+                        //{
+                        //    string resourceKey = entry.Key.ToString();
+                        //    object resource = entry.Value;
+                        //    if (attributes[0].Description == resourceKey)
+                        //    {
+                        //        result = resource.ToString();
+                        //    }
+                        //}
+
+                       // return result;
                         return ((attributes.Length > 0) && (!String.IsNullOrEmpty(attributes[0].Description))) ? attributes[0].Description : value.ToString();
                     }
                 }

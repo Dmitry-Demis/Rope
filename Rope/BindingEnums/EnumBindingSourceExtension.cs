@@ -8,21 +8,19 @@ namespace Rope.BindingEnums
         private Type _enumType;
         public Type EnumType
         {
-            get { return this._enumType; }
+            get => this._enumType;
             set
             {
-                if (value != this._enumType)
+                if (value == this._enumType) return;
+                if (null != value)
                 {
-                    if (null != value)
-                    {
-                        Type enumType = Nullable.GetUnderlyingType(value) ?? value;
+                    Type enumType = Nullable.GetUnderlyingType(value) ?? value;
 
-                        if (!enumType.IsEnum)
-                            throw new ArgumentException("Type must be for an Enum.");
-                    }
-
-                    this._enumType = value;
+                    if (!enumType.IsEnum)
+                        throw new ArgumentException("Type must be for an Enum.");
                 }
+
+                this._enumType = value;
             }
         }
 

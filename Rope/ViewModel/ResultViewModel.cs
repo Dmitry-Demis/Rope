@@ -24,7 +24,11 @@ namespace Rope.ViewModel
         {
             this.dialogService = dialogService;
             this.parameter = parameter;
-            MinFacultyTime = (int)dictionary[parameter.FacultyType];
+            if (dictionary.ContainsKey(parameter.FacultyType))
+            {
+                MinFacultyTime = (int)dictionary[parameter.FacultyType];
+            }
+            
         }
         /// <summary>
         /// Number of a group
@@ -60,6 +64,7 @@ namespace Rope.ViewModel
             {
                 SetProperty(ref _minFacultyTime, value);
                 OnPropertyChanged(nameof(Koeff));
+                OnPropertyChanged(nameof(Result));
             }
         }
         private double CalculateKoeff()
@@ -76,8 +81,7 @@ namespace Rope.ViewModel
             => _okCommand ??
             (_okCommand = new RelayCommand(() =>
             {
-                Result = parameter.TotalScore + CalculateKoeff();
-               
+                Result = parameter.TotalScore + CalculateKoeff();                
                 Close();
             }
             ));

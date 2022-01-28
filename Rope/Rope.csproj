@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,9 +34,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
@@ -57,12 +60,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Points.cs" />
+    <Compile Include="Model\StageModel.cs" />
     <Compile Include="Model\Time.cs" />
     <Compile Include="ViewModel\ResultViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\TotalScoreViewModel.cs" />
     <Compile Include="ViewModel\TotalTimeViewModel.cs" />
     <Compile Include="View\ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsWnd.xaml.cs">
+      <DependentUpon>SettingsWnd.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TotalTimeWindow.xaml.cs">
       <DependentUpon>TotalTimeWindow.xaml</DependentUpon>
@@ -115,6 +126,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsWnd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

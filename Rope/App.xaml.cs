@@ -26,6 +26,7 @@ namespace Rope
             dialogService.Register<TotalScoreViewModel, TotalScoreWindow>();
             dialogService.Register<TotalTimeViewModel, TotalTimeWindow>();
             dialogService.Register<ResultViewModel, ResultWindow>();
+            dialogService.Register<SettingsViewModel, SettingsWindow>();
             var viewModel = new MainWindowViewModel(dialogService, fileService);
             var view = new MainWindow { DataContext = viewModel };
             view.ShowDialog();

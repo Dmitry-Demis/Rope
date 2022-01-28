@@ -26,23 +26,21 @@ namespace Rope.Model
                 window.Loaded += (s, ev) =>
                 {
                     bool closeRequestFromVM = false;
-                    if (window.DataContext is ICloseWindows vm)
+                    if (window.DataContext is not ICloseWindows vm) return;
+                    vm.Closed += () =>
                     {
-                        vm.Closed += () =>
+                        closeRequestFromVM = true;
+                        window.Close();
+                    };
+                    window.Closing += (_s, _e) =>
+                    {
+                        _e.Cancel = !closeRequestFromVM;
+                        window.Dispatcher.BeginInvoke((Action)(() =>
                         {
-                            closeRequestFromVM = true;
-                            window.Close();
-                        };
-                        window.Closing += (_s, _e) =>
-                        {
-                            _e.Cancel = !closeRequestFromVM;
-                            window.Dispatcher.BeginInvoke((Action)(() =>
-                            {
-                                if (!closeRequestFromVM)
-                                    vm.Close();
-                            }));
-                        };
-                    }
+                            if (!closeRequestFromVM)
+                                vm.Close();
+                        }));
+                    };
                 };
             }
         }

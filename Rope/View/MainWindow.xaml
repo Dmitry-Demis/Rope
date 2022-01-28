@@ -118,6 +118,8 @@
                     </Path.Fill>
                 </Path>                
             </Button>
+            <Separator />
+            <Button Content="?" Command="{Binding ShowSettingsCommand}"></Button>
         </ToolBar>
        
         <Grid Margin="5" DockPanel.Dock="Top">
